@@ -27,7 +27,6 @@ public class SampleServiceImpl implements SampleService{
    @Override
    public List<Map<String, Object>> selectBoardList(Map<String, Object> map) throws Exception {
        return sampleDAO.selectBoardList(map);
-        
    }
 
    @Override
@@ -55,8 +54,21 @@ public class SampleServiceImpl implements SampleService{
    }
 
    @Override
-   public void updateBoard(Map<String, Object> map) throws Exception{
+   public void updateBoard(Map<String, Object> map, HttpServletRequest request) throws Exception{
        sampleDAO.updateBoard(map);
+        
+       sampleDAO.deleteFileList(map);
+       List<Map<String,Object>> list = fileUtils.parseUpdateFileInfo(map, request);
+       Map<String,Object> tempMap = null;
+       for(int i=0, size=list.size(); i<size; i++){
+           tempMap = list.get(i);
+           if(tempMap.get("IS_NEW").equals("Y")){
+               sampleDAO.insertFile(tempMap);
+           }
+           else{
+               sampleDAO.updateFile(tempMap);
+           }
+       }
    }
 
    @Override

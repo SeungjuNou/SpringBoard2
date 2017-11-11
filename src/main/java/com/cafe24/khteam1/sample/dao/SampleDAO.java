@@ -10,11 +10,11 @@ import com.cafe24.khteam1.common.dao.AbstractDAO;
 @Repository
 public class SampleDAO extends AbstractDAO{
  
-    @SuppressWarnings("unchecked")
-    public List<Map<String, Object>> selectBoardList(Map<String, Object> map) throws Exception{
-        return (List<Map<String, Object>>)selectList("sample.selectBoardList", map);
-    }
-    
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> selectBoardList(Map<String, Object> map) throws Exception{
+	    return (List<Map<String, Object>>)selectPagingList("sample.selectBoardList", map);
+	}
+	
     public void insertBoard(Map<String, Object> map) throws Exception{
         insert("sample.insertBoard", map);
     }
@@ -45,7 +45,15 @@ public class SampleDAO extends AbstractDAO{
         return (List<Map<String, Object>>)selectList("sample.selectFileList", map);
     }
 
-    
+    public void deleteFileList(Map<String, Object> map) throws Exception{
+        update("sample.deleteFileList", map);
+    }
+     
+    public void updateFile(Map<String, Object> map) throws Exception{
+        update("sample.updateFile", map);
+    }
+
+
 }
 
  

@@ -24,14 +24,28 @@ public class SampleController {
     private SampleService sampleService;
      
     @RequestMapping(value="/sample/openBoardList.do")
-    public ModelAndView openSampleBoardList(Map<String,Object> commandMap) throws Exception{
+    public ModelAndView openBoardList(CommandMap commandMap) throws Exception{
         ModelAndView mv = new ModelAndView("/sample/boardList");
+        return mv;
+    }
+
+    
+    @RequestMapping(value="/sample/selectBoardList.do")
+    public ModelAndView selectBoardList(CommandMap commandMap) throws Exception{
+        ModelAndView mv = new ModelAndView("jsonView");
          
-        List<Map<String,Object>> list = sampleService.selectBoardList(commandMap);
+        List<Map<String,Object>> list = sampleService.selectBoardList(commandMap.getMap());
         mv.addObject("list", list);
+        if(list.size() > 0){
+            mv.addObject("TOTAL", list.get(0).get("TOTAL_COUNT"));
+        }
+        else{
+            mv.addObject("TOTAL", 0);
+        }
          
         return mv;
     }
+
     
     @RequestMapping(value="/sample/testMapArgumentResolver.do")
     public ModelAndView testMapArgumentResolver(CommandMap commandMap) throws Exception{
@@ -80,18 +94,20 @@ public class SampleController {
     @RequestMapping(value="/sample/openBoardUpdate.do")
     public ModelAndView openBoardUpdate(CommandMap commandMap) throws Exception{
         ModelAndView mv = new ModelAndView("/sample/boardUpdate");
-         
+        log.debug("test");
         Map<String,Object> map = sampleService.selectBoardDetail(commandMap.getMap());
-        mv.addObject("map", map);
-         
+        
+        mv.addObject("map", map.get("map"));
+        mv.addObject("list", map.get("list"));
+        
         return mv;
     }
      
     @RequestMapping(value="/sample/updateBoard.do")
-    public ModelAndView updateBoard(CommandMap commandMap) throws Exception{
+    public ModelAndView updateBoard(CommandMap commandMap, HttpServletRequest request) throws Exception{
         ModelAndView mv = new ModelAndView("redirect:/sample/openBoardDetail.do");
          
-        sampleService.updateBoard(commandMap.getMap());
+        sampleService.updateBoard(commandMap.getMap(), request);
          
         mv.addObject("IDX", commandMap.get("IDX"));
         return mv;

@@ -8,9 +8,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
  
-<link rel="stylesheet" type="text/css" href="<c:url value='/css/ui.css'/>" />
+<link rel="stylesheet" type="text/css" href="<c:url value='/css/ui.css?ver=1'/>" />
  
 <!-- jQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="<c:url value='/js/common.js'/>" charset="utf-8"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js?ver=1"></script>
+<script src="<c:url value='/js/common.js?ver=2'/>" charset="utf-8"></script>
 

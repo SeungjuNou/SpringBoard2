@@ -3,12 +3,36 @@
  
 <mapper namespace="sample">
 
+	<sql id="pagingPre">
+		<![CDATA[
+		select @i as TOTAL_COUNT, AAA.*
+		from(
+		select
+		@i := @i + 1 as RNUM
+		, AA.*
+		from(
+		]]>
+	</sql>
+	 
+	<sql id="pagingPost">
+		<![CDATA[
+		) AA, (select @i := 0, @j := 0) temp	
+		) AAA	
+		where AAA.RNUM limit #{START}, #{END}
+		]]>
+	</sql>
+
+
+
+
 	<select id="selectBoardList" parameterType="hashmap" resultType="hashmap">
+		<include refid="pagingPre"/> 
         <![CDATA[
             SELECT * FROM TB_BOARD
             WHERE DEL_GB = 'N'
             ORDER BY IDX DESC
         ]]>
+        <include refid="pagingPost"/>
     </select>
     
     <insert id="insertBoard" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
@@ -79,6 +103,25 @@
 	            AND DEL_GB = 'N'
 	    ]]>
 	</select>
+	
+	<update id="deleteFileList" parameterType="hashmap">
+	    <![CDATA[
+	        UPDATE TB_FILE SET
+	            DEL_GB = 'Y'
+	        WHERE
+	            BOARD_IDX = #{IDX} 
+	    ]]>
+	</update>
+	 
+	<update id="updateFile" parameterType="hashmap">
+	    <![CDATA[
+	        UPDATE TB_FILE SET
+	            DEL_GB = 'N'
+	        WHERE
+	            IDX = #{FILE_IDX}  
+	    ]]>
+	</update>
+
 
 
 
